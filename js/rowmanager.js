@@ -40,22 +40,26 @@ SQL.RowManager.prototype.select = function(row) { /* activate a row */
 
 SQL.RowManager.prototype.tableClick = function(e) { /* create relation after clicking target table */
 	if (!this.creating) { return; }
-
 	var r1 = this.selected;
 	var t2 = e.target.owner;
 	if(t2.getTitle().length == 0) 
 		t2 = e.target;
-	if(r1.owner.getTitle() == t2.getTitle()) 
-		return;	
-	var p = this.owner.getOption("pattern");
-	p = p.replace(/%T/g,r1.owner.getTitle());
-	p = p.replace(/%t/g,t2.getTitle());
-	p = p.replace(/%R/g,r1.getTitle());
+	if(!r1.isPrimary())
+		return;
 	
-	var r2 = t2.addRow(p, r1.data);
-	r2.update({"type":SQL.Designer.getFKTypeFor(r1.data.type)});
-	r2.update({"ai":false});
-	this.owner.addRelation(r1, r2);
+	var p = this.owner.getOption("pattern");
+	if(r1.owner.zIndex != t2.zIndex){
+		p = p.replace(/%T/g,r1.owner.getTitle());
+		p = p.replace(/%t/g,t2.getTitle());
+		p = p.replace(/%R/g,r1.getTitle());
+		var r2 = t2.addRow(p, r1.data);
+		r2.update({"type":SQL.Designer.getFKTypeFor(r1.data.type)});
+		r2.update({"ai":false});
+		this.owner.addRelation(r1, r2);
+	}else{		
+		if(r1.getTitle() != e.target.getTitle() && e.target.owner.getTitle().length != 0)
+			this.owner.addRelation(r1, e.target);		
+	}	
 }
 
 SQL.RowManager.prototype.rowClick = function(e) { /* draw relation after clicking target row */

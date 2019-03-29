@@ -9,6 +9,8 @@ SQL.Rubberband = function(owner) {
 SQL.Rubberband.prototype = Object.create(SQL.Visual.prototype);
 
 SQL.Rubberband.prototype.down = function(e) {
+
+	document.getElementsByTagName("body")[0].style.cursor = "auto";
 	OZ.Event.prevent(e);
 	var scroll = OZ.DOM.scroll();
 	this.x = this.x0 = e.clientX + scroll[0];

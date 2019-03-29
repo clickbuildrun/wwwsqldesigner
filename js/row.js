@@ -78,10 +78,12 @@ SQL.Row.prototype.mousedown = function(e) { /* mousedown on row */
 	 SQL.publish("rowclick", this);
 	 this.owner.owner.rowManager.select(this);
 	 this.owner.owner.rowManager.foreigncreate();
+	 document.getElementsByTagName("body")[0].style.cursor = "url('../images/swap-icon.png'), auto";
 }
 
 SQL.Row.prototype.mouseup = function(e) { /* mouseup on row */
 	 SQL.publish("tableclick", this);
+	 document.getElementsByTagName("body")[0].style.cursor = "auto";
 }
 
 SQL.Row.prototype.dblclick = function(e) { /* dblclicked on row */
