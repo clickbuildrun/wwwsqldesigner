@@ -39,8 +39,11 @@ SQL.Table.prototype._build = function() {
 	this._ec.push(OZ.Event.add(this.dom.container, "click", this.click.bind(this)));
 	this._ec.push(OZ.Event.add(this.dom.container, "dblclick", this.dblclick.bind(this)));
 	this._ec.push(OZ.Event.add(this.dom.container, "mousedown", this.down.bind(this)));
+	this._ec.push(OZ.Event.add(this.dom.container, "mousemove", this.move.bind(this)));
+	this._ec.push(OZ.Event.add(this.dom.container, "mouseup", this.up.bind(this)));
 	this._ec.push(OZ.Event.add(this.dom.container, "touchstart", this.down.bind(this)));
 	this._ec.push(OZ.Event.add(this.dom.container, "touchmove", OZ.Event.prevent));
+
 }
 
 SQL.Table.prototype.setTitle = function(t) {
@@ -229,8 +232,6 @@ SQL.Table.prototype.down = function(e) { /* mousedown - start drag */
 		}
 	}
 	
-	this.documentMove = OZ.Event.add(document, moveEvent, this.move.bind(this));
-	this.documentUp = OZ.Event.add(document, upEvent, this.up.bind(this));
 }
 
 SQL.Table.prototype.toXML = function() {
@@ -322,6 +323,8 @@ SQL.Table.prototype.move = function(e) { /* mousemove */
 }
 
 SQL.Table.prototype.up = function(e) {
+	SQL.publish("tableclick", this);
+
 	var t = SQL.Table;
 	var d = SQL.Designer;
 	if (d.getOption("hide")) { 

@@ -40,10 +40,13 @@ SQL.RowManager.prototype.select = function(row) { /* activate a row */
 
 SQL.RowManager.prototype.tableClick = function(e) { /* create relation after clicking target table */
 	if (!this.creating) { return; }
-	
+
 	var r1 = this.selected;
-	var t2 = e.target;
-	
+	var t2 = e.target.owner;
+	if(t2.getTitle().length == 0) 
+		t2 = e.target;
+	if(r1.owner.getTitle() == t2.getTitle()) 
+		return;	
 	var p = this.owner.getOption("pattern");
 	p = p.replace(/%T/g,r1.owner.getTitle());
 	p = p.replace(/%t/g,t2.getTitle());
