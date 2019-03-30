@@ -40,6 +40,8 @@ SQL.Row.prototype._build = function() {
 	this.changeComment = this.changeComment.bind(this);
 
 	OZ.Event.add(this.dom.container, "click",this.click.bind(this));
+	OZ.Event.add(this.dom.container, "mousedown",this.mousedown.bind(this));
+	OZ.Event.add(this.dom.container, "mouseup",this.mouseup.bind(this));
 	OZ.Event.add(this.dom.container, "dblclick",this.dblclick.bind(this));
 }
 
@@ -71,6 +73,18 @@ SQL.Row.prototype.setTitle = function(t) {
 SQL.Row.prototype.click = function(e) { /* clicked on row */
 	SQL.publish("rowclick", this);
 	this.owner.owner.rowManager.select(this);
+}
+SQL.Row.prototype.mousedown = function(e) { /* mousedown on row */
+	 SQL.publish("rowclick", this);
+	 this.owner.owner.rowManager.select(this);
+	 this.owner.owner.rowManager.foreigncreate();
+	 if(this.isPrimary())
+	 	document.getElementsByTagName("body")[0].style.cursor = "url('../images/swap-icon.png'), auto";
+}
+
+SQL.Row.prototype.mouseup = function(e) { /* mouseup on row */
+	 SQL.publish("tableclick", this);
+	 document.getElementsByTagName("body")[0].style.cursor = "auto";
 }
 
 SQL.Row.prototype.dblclick = function(e) { /* dblclicked on row */
